@@ -1,0 +1,10 @@
+c:\users\tord\documents\visual studio 2012\Projects\TicTacToe\TicTacToe\bin\Debug\TicTacToe.exe.config
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\bin\Debug\TicTacToe.exe
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\bin\Debug\TicTacToe.pdb
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\obj\Debug\TicTacToe.csprojResolveAssemblyReference.cache
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\obj\Debug\TicTacToe.Properties.Resources.resources
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\obj\Debug\TicTacToe.csproj.GenerateResource.Cache
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\obj\Debug\TicTacToe.exe
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\obj\Debug\TicTacToe.pdb
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\obj\Debug\TicTacToe.ServerConnectForm.resources
+C:\Users\tord\Documents\Visual Studio 2012\Projects\TicTacToe\TicTacToe\obj\Debug\TicTacToe.Gamearea.resources
