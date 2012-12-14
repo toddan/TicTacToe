@@ -7,11 +7,11 @@ using System.Windows.Forms;
 
 namespace TicTacToe
 {
-    class Gameplan
+    static class Gameplan
     {
-        public string gameArea { get; set; }
+        public static string gameArea;
 
-        public void checkWin()
+        public static void checkWin()
         {
             string[] winnerPatterns = new string[] {"123","456","789",
                                                     "147","258","369",
@@ -26,7 +26,7 @@ namespace TicTacToe
             }
         }
 
-        private string reverse(string input)
+        private static string reverse(string input)
         {
             char[] inputarray = input.ToCharArray();
             Array.Reverse(inputarray);

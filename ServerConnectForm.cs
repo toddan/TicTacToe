@@ -14,6 +14,7 @@ namespace TicTacToe
     public partial class ServerConnectForm : Form
     {
         public static ListBox ListBox1ref = null;
+        public static ServerConnectForm ServerConnectFormref = null;
 
         private Networking ClientNetworking;
 
@@ -21,6 +22,7 @@ namespace TicTacToe
         {
             InitializeComponent();
             ListBox1ref = listBox1;
+            ServerConnectFormref = this;
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)
@@ -30,8 +32,22 @@ namespace TicTacToe
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Gamearea gameare = new Gamearea();
-            gameare.Show();
+            try
+            {
+                if (textBoxUserName.Text == "")
+                {
+                    MessageBox.Show("You must enter a username to paly");
+                }
+                else
+                {
+                    ClientNetworking.StartGameWithOpponent(listBox1.SelectedIndex, textBoxUserName.Text);
+                    ClientNetworking.StartGameWithSelf();
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show("you need to choose a player to play");
+            }
         }
     }
 }

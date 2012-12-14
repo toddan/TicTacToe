@@ -12,65 +12,88 @@ namespace TicTacToe
 {
     public partial class Gamearea : Form
     {
-        Gameplan myGameplan = new Gameplan();
+        public static Gamearea GameAreaFormref;
 
-        public Gamearea()
+        public static Button button1ref;
+
+        public string OpponentIp{get;set;}
+
+        public Gamearea(string OpponentName)
         {
             InitializeComponent();
+            GameAreaFormref = this;
+            button1ref = button1;
+            label2.Text = OpponentName;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "1";
-            myGameplan.checkWin();
+            button1.Text = "X";
+            try
+            {
+                Networking.Instance.SendGamePatternToOpponent(OpponentIp);
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+            }
+            Gameplan.checkWin();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "2";
-            myGameplan.checkWin();
+            button2.Text = "X";
+            Gameplan.gameArea += "2";
+            Gameplan.checkWin();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "3";
-            myGameplan.checkWin();
+            button3.Text = "X";
+            Gameplan.gameArea += "3";
+            Gameplan.checkWin();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "4";
-            myGameplan.checkWin();
+            button4.Text = "X";
+            Gameplan.gameArea += "4";
+            Gameplan.checkWin();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "5";
-            myGameplan.checkWin();
+            button5.Text = "X";
+            Gameplan.gameArea += "5";
+            Gameplan.checkWin();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "6";
-            myGameplan.checkWin();
+            button6.Text = "X";
+            Gameplan.gameArea += "6";
+            Gameplan.checkWin();
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "7";
-            myGameplan.checkWin();
+            button7.Text = "X";
+            Gameplan.gameArea += "7";
+            Gameplan.checkWin();
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "8";
-            myGameplan.checkWin();
+            button8.Text = "X";
+            Gameplan.gameArea += "8";
+            Gameplan.checkWin();
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            myGameplan.gameArea += "9";
-            myGameplan.checkWin();
+            button9.Text = "X";
+            Gameplan.gameArea += "9";
+            Gameplan.checkWin();
         }
     }
 }
