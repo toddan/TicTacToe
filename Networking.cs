@@ -13,140 +13,83 @@ namespace TicTacToe
 {
     class Networking
     {
-        private TcpClient tcpClient;
-        private Stream ClientStream;
-        private StreamReader ClientStreamReader;
-        private StreamWriter ClientStreamWriter;
+        private ServerConnection Connection;
 
-        private static Networking instance;
-
-        private string[] UserList;
-
-        public static Networking Instance
+        public Networking(ServerConnection Conn)
         {
-            get
+            Connection = Conn;
+        }
+
+        public void LoginToServer()
+        {
+            Connection.Connect();
+            Thread ListenToServer = new Thread(new ThreadStart(InCommingPackages));
+            ListenToServer.Start();
+            Connection.SendPackageToServer(new Package("login", "client", "server", "None"));
+        }
+
+        /// <summary>
+        /// Handles the incomming packages. 
+        /// Updates the gui depending on the command sent by the server
+        /// </summary>
+        public void InCommingPackages()
+        {
+            try
             {
-                if (instance == null)
+                for (; ; )
                 {
-                    throw new Exception("There is no connection");
-                }
-                return instance;
-            }
-        }
-
-        public Networking(string ip, int port)
-        {
-            tcpClient = new TcpClient();
-            try
-            {
-                tcpClient.Connect(IPAddress.Parse(ip), port);
-                MessageBox.Show("Connected to server" + ip +":"+port.ToString());
-                Thread ListenOnServerThread = new Thread(new ThreadStart(InCommingTasks));
-                ListenOnServerThread.Start();
-                SendTaskToServer(new Package("login","client","server","None"));
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            instance = this;
-        }
-
-        public void SendTaskToServer(Package CommandToServer)
-        {
-            try
-            {
-                ClientStream = tcpClient.GetStream();
-                ClientStreamWriter = new StreamWriter(ClientStream);
-                ClientStreamWriter.AutoFlush = true;
-                ClientStreamWriter.WriteLine(Protocol.MakePackageString(CommandToServer));
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
-        public string GetServerResponse()
-        {
-            ClientStream = tcpClient.GetStream();
-            ClientStreamReader = new StreamReader(ClientStream);
-            return ClientStreamReader.ReadLine();
-        }
-
-        public void InCommingTasks()
-        {
-            try
-            {
-                for (;;)
-                {
-                    Package InCommingPackage = Protocol.ParsePackageString(GetServerResponse());
-                    MessageBox.Show("client: " + Protocol.MakePackageString(InCommingPackage));
+                    Package InCommingPackage = PacketParser.ParsePackageString(Connection.GetServerResponse());
+                    Console.WriteLine("client " + PacketParser.MakePackageString(InCommingPackage));
 
                     if (InCommingPackage.Type == "userlist")
                     {
-                        GetLoggedInPlayers(InCommingPackage);
+                        GUIUpdates.UpdateUserListListBox(InCommingPackage, Connection.LocalIpAddress);
                     }
 
                     if (InCommingPackage.Type == "newgame")
                     {
+                        Console.WriteLine("new game: " + PacketParser.MakePackageString(InCommingPackage));
                         GUIUpdates.ShowGamePlan(InCommingPackage);
                     }
 
                     if (InCommingPackage.Type == "gamepattern")
                     {
+                        Console.WriteLine("game pattern: " + InCommingPackage.Data);
                         GUIUpdates.UpdateGameAreaForm(InCommingPackage);
                     }
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                Console.WriteLine("in comming package: " + e.Message);
             }
         }
 
-        public void StartGameWithOpponent(int opponent,string UserName)
+        public void StartGameWithOpponent(string opponent,string UserName)
         {
-            Package StartGame = new Package();
-            StartGame.Type = "newgame";
-            StartGame.To = UserList[opponent];
-            StartGame.From = tcpClient.Client.LocalEndPoint.ToString();
-            StartGame.Data = UserName;
-            SendTaskToServer(StartGame);
+            Package StartGamePackage = new Package("newgame", Connection.LocalIpAddress,
+                opponent,UserName);
+            Connection.SendPackageToServer(StartGamePackage);
         }
 
-        public void StartGameWithSelf()
+        /// <summary>
+        /// When the user starts a new game with an opponent.
+        /// We have to send a new game command to the user so that his gameplan 
+        /// gets started too. 
+        /// </summary>
+        /// <param name="opponent">Ip of the opponent</param>
+        public void StartGameWithSelf(string opponent)
         {
-            Package StartGame = new Package();
-            StartGame.Type = "newgame";
-            StartGame.To = tcpClient.Client.LocalEndPoint.ToString();
-            StartGame.From = tcpClient.Client.LocalEndPoint.ToString();
-            StartGame.Data = "None";
-            SendTaskToServer(StartGame);
+            Package StartGameWithSelfPackage = new Package("newgame", opponent, 
+                Connection.LocalIpAddress,"None");
+            Connection.SendPackageToServer(StartGameWithSelfPackage);
         }
 
-        public void SendGamePatternToOpponent(string opponentIp)
+        public void SendGamePatternToOpponent(string opponentIp,string num)
         {
-            Package GamePattern = new Package();
-            GamePattern.Type = "gamepattern";
-            GamePattern.To = opponentIp;
-            GamePattern.From = tcpClient.Client.LocalEndPoint.ToString();
-            GamePattern.Data = Gameplan.gameArea;
-            SendTaskToServer(GamePattern);
-        }
-
-        private void GetLoggedInPlayers(Package LoginResponse)
-        {
-            UserList = LoginResponse.Data.Split(';');
-            for (int i = 0; i < UserList.Length;i++ )
-            {
-                if (UserList[i] == tcpClient.Client.LocalEndPoint.ToString())
-                {
-                    UserList[i] += " YOU";
-                }
-            }
-
-            GUIUpdates.UpdateUserListListBox(UserList);
+            Package GamePattern = new Package("gamepattern",Connection.LocalIpAddress,
+                opponentIp,num);
+            Connection.SendPackageToServer(GamePattern);
         }
     }
 }

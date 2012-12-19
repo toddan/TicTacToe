@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicTacToe
 {
-    static class Protocol
+    static class PacketParser
     {
         public static string MakePackageString(Package package)
         {
