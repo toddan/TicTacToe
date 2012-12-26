@@ -43,9 +43,8 @@ namespace TicTacToe
         {
             // make a new connection to the server
             ClientNetworking = new Networking(
-                new ServerConnection(textBoxServerIp.Text, 
+                new ServerConnection(textBoxServerIp.Text,
                     Convert.ToInt32(textBoxServerPort.Text)));
-
             // login to the game server
             ClientNetworking.LoginToServer();
         }
@@ -60,9 +59,16 @@ namespace TicTacToe
                 }
                 else
                 {
-                    ClientNetworking.StartGameWithOpponent(userlist[listBox1.SelectedIndex],
-                        textBoxUserName.Text);
-                    ClientNetworking.StartGameWithSelf(userlist[listBox1.SelectedIndex]);
+                    if (userlist[listBox1.SelectedIndex].Split(' ').Contains("YOU"))
+                    {
+                        MessageBox.Show("you can not start a game with your self");
+                    }
+                    else
+                    {
+                        ClientNetworking.StartGameWithOpponent(userlist[listBox1.SelectedIndex],
+                            textBoxUserName.Text);
+                        ClientNetworking.StartGameWithSelf(userlist[listBox1.SelectedIndex]);
+                    }
                 }
 
             }
