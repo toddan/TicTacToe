@@ -24,8 +24,14 @@ namespace TicTacToe
         {
             Connection.Connect();
             Thread ListenToServer = new Thread(new ThreadStart(InCommingPackages));
+            ListenToServer.IsBackground = true;
             ListenToServer.Start();
             Connection.SendPackageToServer(new Package("login", "client", "server", "None"));
+        }
+
+        public void LogoutFromServer()
+        {
+            Connection.DisConnect();
         }
 
         /// <summary>
@@ -36,7 +42,7 @@ namespace TicTacToe
         {
             try
             {
-                for (; ; )
+                for( ; ; )
                 {
                     Package InCommingPackage = PacketParser.ParsePackageString(Connection.GetServerResponse());
                     Console.WriteLine("client " + PacketParser.MakePackageString(InCommingPackage));

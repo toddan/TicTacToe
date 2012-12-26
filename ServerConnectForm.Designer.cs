@@ -39,8 +39,8 @@
             this.textBoxServerPort = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBoxUserName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.textBoxUserName = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -139,6 +139,7 @@
             this.button2.TabIndex = 4;
             this.button2.Text = "Log out";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // groupBox3
             // 
@@ -153,13 +154,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Game";
             // 
-            // textBoxUserName
-            // 
-            this.textBoxUserName.Location = new System.Drawing.Point(55, 30);
-            this.textBoxUserName.Name = "textBoxUserName";
-            this.textBoxUserName.Size = new System.Drawing.Size(123, 20);
-            this.textBoxUserName.TabIndex = 5;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -168,6 +162,13 @@
             this.label3.Size = new System.Drawing.Size(58, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "User name";
+            // 
+            // textBoxUserName
+            // 
+            this.textBoxUserName.Location = new System.Drawing.Point(55, 30);
+            this.textBoxUserName.Name = "textBoxUserName";
+            this.textBoxUserName.Size = new System.Drawing.Size(123, 20);
+            this.textBoxUserName.TabIndex = 5;
             // 
             // ServerConnectForm
             // 

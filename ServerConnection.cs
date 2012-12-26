@@ -68,6 +68,11 @@ namespace TicTacToe
             }
         }
 
+        public void DisConnect()
+        {
+            tcpClient.Close();
+        }
+
         public string GetServerResponse()
         {
             ClientStream = tcpClient.GetStream();

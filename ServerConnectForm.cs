@@ -27,10 +27,9 @@ namespace TicTacToe
     {
         public static ListBox ListBox1ref = null;
         public static ServerConnectForm ServerConnectFormref = null;
-
-        public static string[] userlist;
-
         private Networking ClientNetworking;
+        public static string[] userlist;
+        private bool IsConnected = false;
 
         public ServerConnectForm()
         {
@@ -45,8 +44,16 @@ namespace TicTacToe
             ClientNetworking = new Networking(
                 new ServerConnection(textBoxServerIp.Text,
                     Convert.ToInt32(textBoxServerPort.Text)));
-            // login to the game server
-            ClientNetworking.LoginToServer();
+            if (IsConnected)
+            {
+                MessageBox.Show("you are already connected!");
+            }
+            else
+            {
+                // login to the game server
+                ClientNetworking.LoginToServer();
+                IsConnected = true;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -57,18 +64,15 @@ namespace TicTacToe
                 {
                     MessageBox.Show("You must enter a username to paly");
                 }
+                else if (userlist[listBox1.SelectedIndex].Split(' ').Contains("YOU"))
+                {
+                     MessageBox.Show("you can not start a game with your self");
+                }
                 else
                 {
-                    if (userlist[listBox1.SelectedIndex].Split(' ').Contains("YOU"))
-                    {
-                        MessageBox.Show("you can not start a game with your self");
-                    }
-                    else
-                    {
-                        ClientNetworking.StartGameWithOpponent(userlist[listBox1.SelectedIndex],
-                            textBoxUserName.Text);
-                        ClientNetworking.StartGameWithSelf(userlist[listBox1.SelectedIndex]);
-                    }
+                    ClientNetworking.StartGameWithOpponent(userlist[listBox1.SelectedIndex],
+                        textBoxUserName.Text);
+                    ClientNetworking.StartGameWithSelf(userlist[listBox1.SelectedIndex]);
                 }
 
             }
@@ -76,6 +80,15 @@ namespace TicTacToe
             {
                 MessageBox.Show(E.Message);
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ClientNetworking.LogoutFromServer();
+            IsConnected = false;
+            userlist = null;
+            listBox1.DataSource = null;
+            listBox1.Refresh();
         }
     }
 }
